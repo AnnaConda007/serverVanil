@@ -1,4 +1,8 @@
 @charset "UTF-8";
+* {
+  color: black;
+}
+
 /*!
  * Bootstrap  v5.2.3 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
@@ -10117,9 +10121,8 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.btn-primary:focus {
+  background-color: #f5d3e7;
+}
 
 /*# sourceMappingURL=style.css.map */
-.list-wrap{
-  width: 100%;
-  background-color: #c7eff7;
-}
