@@ -12,7 +12,7 @@
 
 <body>
     <div class="container d-flex justify-content-center align-items-center  h-100">
-        <div class="authorization w-50   ">
+        <div class="authorization  w-50   ">
             <label for="login">Ваш логин</label>
             <div class="input-group mb-3 w-100">
                 <input type="text" class="form-control" placeholder="логин" aria-label="login"
@@ -24,11 +24,14 @@
                     aria-describedby="password">
             </div>
             <div class="container d-flex justify-content-center align-items-center  ">
-            <button type="button" class="btn btn-primary">войти</button>
+            <button type="button" class="btn btn-primary btn-authorization">войти</button>
+            </div>
+            <div class="alert alert-danger text-danger  " role="alert">
+               Неверный логин или пароль
             </div>
         </div>
     </div>
-    <script src="js/script.js" type="module"></script>
+    <script src="js/main.js" type="module"></script>
 </body>
 
 </html>
