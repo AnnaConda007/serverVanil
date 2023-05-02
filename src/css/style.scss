@@ -1,12 +1,10 @@
 
-$primary: #f5d3e7;
+$primary: #1421de;
 $theme-colors: (
   "primary": $primary,
 );
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
-
-.btn-primary:focus {
-color: black;
-background-color:$primary;
+html, body {
+  height: 100%;
 }
