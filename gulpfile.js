@@ -6,11 +6,18 @@ const htmlmin = require('gulp-htmlmin');
 const strip = require('gulp-strip-comments');
 const replace = require('gulp-replace');
 const rename = require('gulp-rename');
+const browserSync = require('browser-sync').create();
+
 
 const copy = require('gulp-copy');
 
 gulp.task('dev', function () {
-    gulp.watch(['src/js/**/*.js', 'src/css/**/*.css'], gulp.series('build'));
+    browserSync.init({
+        server: {
+            baseDir: "./dist"
+        }
+    });
+    gulp.watch(['src/js/**/*.js', 'src/css/**/*.css', 'src/*.html'], gulp.series('build')).on('change', browserSync.reload);
 });
 
 gulp.task('build', function (done) {
