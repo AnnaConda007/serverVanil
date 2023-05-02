@@ -5,10 +5,7 @@ const cssnano = require('gulp-cssnano');
 const htmlmin = require('gulp-htmlmin');
 const strip = require('gulp-strip-comments');
 const replace = require('gulp-replace');
-const rename = require('gulp-rename');
 const browserSync = require('browser-sync').create();
-
-
 const copy = require('gulp-copy');
 
 gulp.task('dev', function () {
@@ -29,7 +26,23 @@ gulp.task('build', function (done) {
         .pipe(copy('dist/css', { prefix: 2 }))
     gulp.src(['src/css/**/*.css', '!src/css/bootstrap.min.css'])
         .pipe(concat('style.min.css'))
-        .pipe(cssnano())
+        .pipe(cssnano({
+            discardComments: false,
+            mergeRules: false,
+            reduceTransforms: false,
+            reducePositions: false,
+            discardUnused: false,
+            discardDuplicates: false,
+            discardOverridden: false,
+            mergeLonghand: false,
+            mergeIdents: false,
+            reduceIdents: false,
+            reduceInitial: false,
+            zindex: false,
+            colormin: false,
+            svgo: false,
+            minifyFontValues: false
+        }))
         .pipe(gulp.dest('dist/css'))
     gulp.src('src/*.html')
         .pipe(strip())
