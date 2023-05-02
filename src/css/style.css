@@ -1,8 +1,4 @@
 @charset "UTF-8";
-* {
-  color: black;
-}
-
 /*!
  * Bootstrap  v5.2.3 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
@@ -10122,6 +10118,7 @@ textarea.form-control-lg {
   }
 }
 .btn-primary:focus {
+  color: black;
   background-color: #f5d3e7;
 }
 
