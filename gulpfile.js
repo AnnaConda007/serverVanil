@@ -7,6 +7,7 @@ const strip = require('gulp-strip-comments');
 const replace = require('gulp-replace');
 const browserSync = require('browser-sync').create();
 const copy = require('gulp-copy');
+const babel = require('gulp-babel');
 
 gulp.task('dev', function () {
     browserSync.init({
@@ -19,7 +20,11 @@ gulp.task('dev', function () {
 
 gulp.task('build', function (done) {
     gulp.src('src/js/**/*.js')
-        .pipe(concat('script.min.js'))
+        .pipe(babel({
+            presets: ['@babel/preset-env'],
+            plugins: [['@babel/plugin-transform-modules-umd', { globals: { 'lodash': '_' } }]]
+        }))
+        .pipe(concat('main.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('dist/js'));
     gulp.src('src/css/bootstrap.min.css')
@@ -48,7 +53,7 @@ gulp.task('build', function (done) {
         .pipe(strip())
         .pipe(htmlmin({ collapseWhitespace: true }))
         .pipe(replace('style.css', 'style.min.css'))
-        .pipe(replace('script.js', 'script.min.js'))
+        .pipe(replace('main.js', 'main.min.js'))
         .pipe(gulp.dest('dist'))
         .on('end', done);
 })
