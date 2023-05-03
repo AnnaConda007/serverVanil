@@ -12,7 +12,7 @@ const babel = require('gulp-babel');
 gulp.task('dev', function () {
     browserSync.init({
         server: {
-            baseDir: "./dist"
+            baseDir: "./src"
         }
     });
     gulp.watch(['src/js/**/*.js', 'src/css/**/*.css', 'src/*.html'], gulp.series('build')).on('change', browserSync.reload);
@@ -26,9 +26,9 @@ gulp.task('build', function (done) {
         }))
         .pipe(concat('main.min.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('dist/js'));
+        .pipe(gulp.dest('dist/src/js'));
     gulp.src('src/css/bootstrap.min.css')
-        .pipe(copy('dist/css', { prefix: 2 }))
+        .pipe(copy('dist/src/css', { prefix: 2 }))
     gulp.src(['src/css/**/*.css', '!src/css/bootstrap.min.css'])
         .pipe(concat('style.min.css'))
         .pipe(cssnano({
@@ -48,12 +48,12 @@ gulp.task('build', function (done) {
             svgo: false,
             minifyFontValues: false
         }))
-        .pipe(gulp.dest('dist/css'))
+        .pipe(gulp.dest('dist/src/css'))
     gulp.src('src/*.html')
         .pipe(strip())
         .pipe(htmlmin({ collapseWhitespace: true }))
         .pipe(replace('style.css', 'style.min.css'))
         .pipe(replace('main.js', 'main.min.js'))
-        .pipe(gulp.dest('dist'))
+        .pipe(gulp.dest('dist/src'))
         .on('end', done);
 })
