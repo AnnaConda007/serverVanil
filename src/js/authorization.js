@@ -11,7 +11,7 @@ const authorization = async () => {
             if (login !== res[i].name || password !== res[i].password) {
                 console.log("ppp")
                 error.style.display = "block"
-            } else { window.location.href = "success.html" }
+            } else { window.location.href ="success.html" }
 
         }
     })
