@@ -15,7 +15,7 @@ gulp.task('dev', function () {
             baseDir: "./src"
         }
     });
-    gulp.watch(['src/js/**/*.js', 'src/css/**/*.css', 'src/*.html'], gulp.series('build')).on('change', browserSync.reload);
+    gulp.watch(['src/js/**/*.js', 'src/css/**/*.css', 'src/*.html']).on('change', browserSync.reload);
 });
 
 gulp.task('build', function (done) {
