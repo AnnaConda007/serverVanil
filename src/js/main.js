@@ -1,4 +1,4 @@
-import authorization from './authorization.js'
-window.addEventListener("DOMContentLoaded", ()=>{
-    authorization()
-})
+import authorization from './modules/authorization.js';
+window.addEventListener('DOMContentLoaded', () => {
+	authorization();
+});
