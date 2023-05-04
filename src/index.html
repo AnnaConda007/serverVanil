@@ -1,37 +1,48 @@
 <!DOCTYPE html>
 <html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="css/bootstrap.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<title>users</title>
+	</head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <title>users</title>
-</head>
-
-<body>
-    <div class="container d-flex justify-content-center align-items-center  h-100">
-        <div class="authorization  w-50   ">
-            <label for="login">Ваш логин</label>
-            <div class="input-group mb-3 w-100">
-                <input type="text" class="form-control" placeholder="логин"         aria-label="login"
-                    aria-describedby="password" id="login" autocomplete="off">
-            </div>
-            <label for="password">Ваш пароль</label>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control " placeholder="пароль" aria-label="password" id="password"
-                    aria-describedby="password">
-            </div>
-            <div class="container d-flex justify-content-center align-items-center  ">
-            <button type="button" class="btn btn-primary btn-authorization">войти</button>
-            </div>
-            <div class="alert alert-danger text-danger  " role="alert">
-               Неверный логин или пароль
-            </div>
-        </div>
-    </div>
-    <script src="js/main.js" type="module"></script>
-</body>
-
+	<body>
+		<div class="container d-flex justify-content-center align-items-center h-100">
+			<div class="authorization w-50">
+				<label for="login">Ваш логин</label>
+				<div class="input-group mb-3 w-100">
+					<input
+						type="text"
+						class="form-control"
+						placeholder="логин"
+						aria-label="login"
+						aria-describedby="password"
+						id="login"
+						autocomplete="off"
+					/>
+				</div>
+				<label for="password">Ваш пароль</label>
+				<div class="input-group mb-3">
+					<input
+						type="text"
+						class="form-control"
+						placeholder="пароль"
+						aria-label="password"
+						id="password"
+						aria-describedby="password"
+					/>
+				</div>
+				<div class="container d-flex justify-content-center align-items-center">
+					<button type="button" class="btn btn-primary btn-authorization">войти</button>
+				</div>
+				<div class="alert alert-danger text-danger" role="alert">
+					Неверный логин или пароль
+				</div>
+			</div>
+		</div>
+		<script src="js/main.js" type="module"></script>
+	</body>
 </html>
