@@ -7,48 +7,61 @@ const strip = require('gulp-strip-comments');
 const replace = require('gulp-replace');
 const browserSync = require('browser-sync').create();
 const copy = require('gulp-copy');
+const babel = require('gulp-babel');
+const webpack = require('webpack-stream');
 
 gulp.task('dev', function () {
-    browserSync.init({
-        server: {
-            baseDir: "./dist"
-        }
-    });
-    gulp.watch(['src/js/**/*.js', 'src/css/**/*.css', 'src/*.html'], gulp.series('build')).on('change', browserSync.reload);
+	browserSync.init({
+		server: {
+			baseDir: './src',
+		},
+	});
+	gulp.watch(['src/js/**/*.js', 'src/css/**/*.css', 'src/*.html']).on('change', browserSync.reload);
 });
 
 gulp.task('build', function (done) {
-    gulp.src('src/js/**/*.js')
-        .pipe(concat('script.min.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest('dist/js'));
-    gulp.src('src/css/bootstrap.min.css')
-        .pipe(copy('dist/css', { prefix: 2 }))
-    gulp.src(['src/css/**/*.css', '!src/css/bootstrap.min.css'])
-        .pipe(concat('style.min.css'))
-        .pipe(cssnano({
-            discardComments: false,
-            mergeRules: false,
-            reduceTransforms: false,
-            reducePositions: false,
-            discardUnused: false,
-            discardDuplicates: false,
-            discardOverridden: false,
-            mergeLonghand: false,
-            mergeIdents: false,
-            reduceIdents: false,
-            reduceInitial: false,
-            zindex: false,
-            colormin: false,
-            svgo: false,
-            minifyFontValues: false
-        }))
-        .pipe(gulp.dest('dist/css'))
-    gulp.src('src/*.html')
-        .pipe(strip())
-        .pipe(htmlmin({ collapseWhitespace: true }))
-        .pipe(replace('style.css', 'style.min.css'))
-        .pipe(replace('script.js', 'script.min.js'))
-        .pipe(gulp.dest('dist'))
-        .on('end', done);
-})
+	gulp
+		.src('src/js/**/*.js')
+		.pipe(webpack(require('./webpack.config.js')))
+		.pipe(
+			babel({
+				presets: ['@babel/preset-env'],
+				plugins: [['@babel/plugin-transform-modules-umd', { globals: { lodash: '_' } }]],
+			})
+		)
+		.pipe(concat('main.min.js'))
+		.pipe(uglify())
+		.pipe(gulp.dest('dist/src/js'));
+	gulp.src('src/css/bootstrap.min.css').pipe(copy('dist/src/css', { prefix: 2 }));
+	gulp
+		.src(['src/css/**/*.css', '!src/css/bootstrap.min.css'])
+		.pipe(concat('style.min.css'))
+		.pipe(
+			cssnano({
+				discardComments: false,
+				mergeRules: false,
+				reduceTransforms: false,
+				reducePositions: false,
+				discardUnused: false,
+				discardDuplicates: false,
+				discardOverridden: false,
+				mergeLonghand: false,
+				mergeIdents: false,
+				reduceIdents: false,
+				reduceInitial: false,
+				zindex: false,
+				colormin: false,
+				svgo: false,
+				minifyFontValues: false,
+			})
+		)
+		.pipe(gulp.dest('dist/src/css'));
+	gulp
+		.src('src/*.html')
+		.pipe(strip())
+		.pipe(htmlmin({ collapseWhitespace: true }))
+		.pipe(replace('style.css', 'style.min.css'))
+		.pipe(replace('main.js', 'main.min.js'))
+		.pipe(gulp.dest('dist/src'))
+		.on('end', done);
+});

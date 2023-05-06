@@ -1,0 +1,25 @@
+{
+  "overrides": [
+    {
+      "files": ["src/**/*.{js,jsx}"],
+      "options": {
+        "printWidth": 90,
+        "useTabs": false,
+        "tabWidth": 2,
+        "singleQuote": true,
+        "jsxSingleQuote": true,
+        "endOfLine": "auto"
+      }
+    },
+   
+      {
+      "files": ["src/**/*.html"],
+      "options": {
+        "printWidth": 120,
+        "useTabs": false,
+        "tabWidth": 2,
+        "endOfLine": "auto"
+      }
+    }
+  ]
+}
