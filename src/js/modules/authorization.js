@@ -3,30 +3,32 @@ const authorization = async () => {
 	const loginInput = document.querySelector('#login');
 	const passwordInput = document.querySelector('#password');
 	const currentTime = Math.floor(Date.now() / 1000);
-	let loginFromStorage = false;
+	let needAutocomplete = true;
+	let AllUsers = [];
 
-	const usersURL = 'http://localhost:3002/users';
-	const request = await fetch(usersURL);
-	const usersData = await request.json();
+	try {
+		const usersURL = 'http://localhost:3002/users';
+		const request = await fetch(usersURL);
+		AllUsers = await request.json();
+	} catch (error) {
+		console.error('Произошла ошибка при выполнении запроса:', error);
+	}
 
 	const matchAuthorization = () => {
-		let match;
 		const login = loginInput.value;
 		const password = passwordInput.value;
 		const error = document.querySelector('.alert-danger');
-		for (const user of usersData) {
-			match = user.name !== login || user.password !== password ? false : true;
-			if (match) {
-				window.location.href = 'success.html';
-				error.classList.remove('visible-element');
-				localStorage.setItem('login', login);
-				localStorage.setItem('password', password);
 
-				localStorage.setItem('isExpired', currentTime + 40);
-				break;
-			} else {
-				error.classList.add('visible-element');
-			}
+		const user = AllUsers.find((user) => user.name === login && user.password === password);
+		if (user) {
+			window.location.href = 'success.html';
+			error.classList.remove('visible-element');
+			localStorage.setItem('login', login);
+			localStorage.setItem('password', password);
+			localStorage.setItem('isExpired', currentTime + 60);
+			localStorage.setItem('authorized', true);
+		} else {
+			error.classList.add('visible-element');
 		}
 	};
 
@@ -43,12 +45,13 @@ const authorization = async () => {
 			localStorage.removeItem('login');
 			localStorage.removeItem('password');
 			localStorage.removeItem('isExpired');
+			localStorage.removeItem('authorized');
 		}
 	};
+	clearLocal();
 
 	const autocomplete = () => {
-		if (!loginFromStorage) {
-			clearLocal();
+		if (needAutocomplete && localStorage.getItem('authorized')) {
 			const usedLogin = localStorage.getItem('login');
 			const usedPassword = localStorage.getItem('password');
 			loginInput.value = usedLogin;
@@ -57,9 +60,9 @@ const authorization = async () => {
 	};
 	loginInput.addEventListener('click', autocomplete);
 	loginInput.addEventListener('input', () => {
-		if (loginInput.value === '' && !loginFromStorage) {
+		if (needAutocomplete && loginInput.value !== localStorage.getItem('login')) {
 			passwordInput.value = '';
-			loginFromStorage = true;
+			needAutocomplete = false;
 		}
 	});
 
