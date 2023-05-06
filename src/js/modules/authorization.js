@@ -1,12 +1,13 @@
 const authorization = async () => {
-	const usersURL = 'http://localhost:3002/users';
-	const request = await fetch(usersURL);
-	const usersData = await request.json();
 	const btn = document.querySelector('.btn-authorization');
 	const loginInput = document.querySelector('#login');
 	const passwordInput = document.querySelector('#password');
 	const currentTime = Math.floor(Date.now() / 1000);
 	let loginFromStorage = false;
+
+	const usersURL = 'http://localhost:3002/users';
+	const request = await fetch(usersURL);
+	const usersData = await request.json();
 
 	const matchAuthorization = () => {
 		let match;
@@ -21,7 +22,7 @@ const authorization = async () => {
 				localStorage.setItem('login', login);
 				localStorage.setItem('password', password);
 
-				localStorage.setItem('isExpired', currentTime + 30);
+				localStorage.setItem('isExpired', currentTime + 40);
 				break;
 			} else {
 				error.classList.add('visible-element');
@@ -36,17 +37,38 @@ const authorization = async () => {
 		}
 	});
 
-	const autocomplete = () => {
+	const clearLocal = () => {
 		const isExpired = localStorage.getItem('isExpired');
-		if (!loginFromStorage && isExpired >= currentTime) {
+		if (isExpired && isExpired <= currentTime) {
+			localStorage.removeItem('login');
+			localStorage.removeItem('password');
+			localStorage.removeItem('isExpired');
+		}
+	};
+
+	const autocomplete = () => {
+		if (!loginFromStorage) {
+			clearLocal();
 			const usedLogin = localStorage.getItem('login');
 			const usedPassword = localStorage.getItem('password');
 			loginInput.value = usedLogin;
 			passwordInput.value = usedPassword;
-			loginFromStorage = true;
 		}
 	};
 	loginInput.addEventListener('click', autocomplete);
+	loginInput.addEventListener('input', () => {
+		if (loginInput.value === '' && !loginFromStorage) {
+			passwordInput.value = '';
+			loginFromStorage = true;
+		}
+	});
+
+	passwordInput.addEventListener('focus', () => {
+		passwordInput.setAttribute('type', 'text');
+	});
+	passwordInput.addEventListener('blur', () => {
+		passwordInput.setAttribute('type', 'password');
+	});
 };
 
 export default authorization;
