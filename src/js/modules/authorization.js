@@ -1,9 +1,11 @@
 const authorization = async () => {
+	const currentURL = window.location.href;
+	const checkURL = 'http://localhost:3000/login.html';
+	if (currentURL != checkURL) return;
 	const btn = document.querySelector('.btn-authorization');
 	const loginInput = document.querySelector('#login');
 	const passwordInput = document.querySelector('#password');
 	const currentTime = Math.floor(Date.now() / 1000);
-	let needAutocomplete = true;
 	let AllUsers = [];
 
 	try {
@@ -21,7 +23,7 @@ const authorization = async () => {
 
 		const user = AllUsers.find((user) => user.name === login && user.password === password);
 		if (user) {
-			window.location.href = 'success.html';
+			window.location.href = 'index.html';
 			error.classList.remove('visible-element');
 			localStorage.setItem('login', login);
 			localStorage.setItem('password', password);
@@ -37,40 +39,6 @@ const authorization = async () => {
 		if (e.code === 'Enter') {
 			matchAuthorization();
 		}
-	});
-
-	const clearLocal = () => {
-		const isExpired = localStorage.getItem('isExpired');
-		if (isExpired && isExpired <= currentTime) {
-			localStorage.removeItem('login');
-			localStorage.removeItem('password');
-			localStorage.removeItem('isExpired');
-			localStorage.removeItem('authorized');
-		}
-	};
-	clearLocal();
-
-	const autocomplete = () => {
-		if (needAutocomplete && localStorage.getItem('authorized')) {
-			const usedLogin = localStorage.getItem('login');
-			const usedPassword = localStorage.getItem('password');
-			loginInput.value = usedLogin;
-			passwordInput.value = usedPassword;
-		}
-	};
-	loginInput.addEventListener('click', autocomplete);
-	loginInput.addEventListener('input', () => {
-		if (needAutocomplete && loginInput.value !== localStorage.getItem('login')) {
-			passwordInput.value = '';
-			needAutocomplete = false;
-		}
-	});
-
-	passwordInput.addEventListener('focus', () => {
-		passwordInput.setAttribute('type', 'text');
-	});
-	passwordInput.addEventListener('blur', () => {
-		passwordInput.setAttribute('type', 'password');
 	});
 };
 
