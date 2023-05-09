@@ -1,15 +1,16 @@
 const authorization = async () => {
 	const currentURL = window.location.href;
-	const checkURL = 'http://localhost:3000/login.html';
-	if (currentURL != checkURL) return;
+	const thisPageURL = 'http://localhost:3000/login.html';
+	const usersURL = 'http://localhost:3002/users';
+	const startPageUrl = 'http://localhost:3000/';
+	if (currentURL != thisPageURL) return;
 	const btn = document.querySelector('.btn-authorization');
 	const loginInput = document.querySelector('#login');
 	const passwordInput = document.querySelector('#password');
-	const currentTime = Math.floor(Date.now() / 1000);
+
 	let AllUsers = [];
 
 	try {
-		const usersURL = 'http://localhost:3002/users';
 		const request = await fetch(usersURL);
 		AllUsers = await request.json();
 	} catch (error) {
@@ -20,10 +21,10 @@ const authorization = async () => {
 		const login = loginInput.value;
 		const password = passwordInput.value;
 		const error = document.querySelector('.alert-danger');
-
 		const user = AllUsers.find((user) => user.name === login && user.password === password);
 		if (user) {
-			window.location.href = 'index.html';
+			const currentTime = Math.floor(Date.now() / 1000);
+			window.location.href = startPageUrl;
 			error.classList.remove('visible-element');
 			localStorage.setItem('login', login);
 			localStorage.setItem('password', password);

@@ -1,26 +1,34 @@
 const checkAuthorization = () => {
 	const currentURL = window.location.href;
-	const checkURL = 'http://localhost:3000/index.html';
-	if (currentURL != checkURL) return;
+	const thisPageURL = 'http://localhost:3000/';
+	const authorizationPage = '/login.html';
+	if (currentURL != thisPageURL) return;
 
 	const clearLocal = () => {
+		localStorage.removeItem('login');
+		localStorage.removeItem('password');
+		localStorage.removeItem('isExpired');
+		localStorage.removeItem('authorized');
+		window.location.href = authorizationPage;
+	};
+	const checkLocal = () => {
 		const currentTime = Math.floor(Date.now() / 1000);
 		const isExpired = localStorage.getItem('isExpired');
 		if (isExpired && isExpired <= currentTime) {
-			localStorage.removeItem('login');
-			localStorage.removeItem('password');
-			localStorage.removeItem('isExpired');
-			localStorage.removeItem('authorized');
+			clearLocal();
 		}
 	};
-	clearLocal();
+	checkLocal();
 
 	if (!localStorage.getItem('authorized')) {
-		window.location.href = 'login.html';
-	} else {
-		const login = localStorage.getItem('login');
-		document.querySelector('.userLogin').innerHTML = `${login}`;
+		window.location.href = authorizationPage;
 	}
+
+	const login = localStorage.getItem('login');
+	document.querySelector('.userLogin').innerHTML = `${login}`;
+	document.querySelector('.go-out').addEventListener('click', () => {
+		clearLocal();
+	});
 };
 
 export default checkAuthorization;

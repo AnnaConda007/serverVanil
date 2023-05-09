@@ -16,4 +16,8 @@ html, body {
 .visible-element{
   display: block;
 }
- 
+.go-out{
+&:hover{
+  color: #ff0000;
+  }
+}
