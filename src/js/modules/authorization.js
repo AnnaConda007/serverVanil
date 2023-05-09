@@ -1,6 +1,6 @@
 const authorization = async () => {
 	const currentURL = window.location.href;
-	const thisPageURL = '/login.html';
+	const thisPageURL = 'http://localhost:3000/login.html';
 	const usersURL = 'http://localhost:3002/users';
 	const startPageUrl = 'http://localhost:3000/';
 	if (currentURL != thisPageURL) return;
