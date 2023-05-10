@@ -3,7 +3,9 @@ const checkAuthorization = () => {
 	const thisPageURL = 'http://localhost:3000/';
 	const authorizationPage = '/login.html';
 	if (currentURL != thisPageURL) return;
-
+	setTimeout(() => {
+		document.querySelector('.loading').classList.add('hidden-element');
+	}, 0);
 	const clearLocal = () => {
 		localStorage.removeItem('login');
 		localStorage.removeItem('password');
@@ -25,7 +27,7 @@ const checkAuthorization = () => {
 	}
 
 	const login = localStorage.getItem('login');
-	document.querySelector('.userLogin').innerHTML = `${login}`;
+	document.querySelector('.user-login').innerHTML = `${login}`;
 	document.querySelector('.go-out').addEventListener('click', () => {
 		clearLocal();
 	});

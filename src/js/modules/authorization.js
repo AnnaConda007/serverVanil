@@ -28,7 +28,7 @@ const authorization = async () => {
 			error.classList.remove('visible-element');
 			localStorage.setItem('login', login);
 			localStorage.setItem('password', password);
-			localStorage.setItem('isExpired', currentTime + 60);
+			localStorage.setItem('isExpired', currentTime + 960);
 			localStorage.setItem('authorized', true);
 		} else {
 			error.classList.add('visible-element');
