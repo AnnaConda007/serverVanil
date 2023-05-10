@@ -1,13 +1,14 @@
 
 $primary: #9a1ac1; 
 $theme-colors: (
-  "primary": $primary,
+  "primary": $primary, 
 );
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
 
 :root{
 --dark-color: rgb(0, 0, 0);
+--danger:rgb(241, 88, 88);
 }
 html, body {
   height: 100%;
@@ -43,7 +44,7 @@ color: var(--dark-color);
     border-radius: 5px;
   padding: 5px 10px;
 &:hover{
- color: red
+ color: var(--danger)
   }
 }
 
