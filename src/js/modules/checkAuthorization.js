@@ -6,7 +6,7 @@ const checkAuthorization = () => {
 
 	setTimeout(() => {
 		document.querySelector('.loading').classList.add('hidden-element');
-	}, 0);
+	}, 500);
 	const clearLocal = () => {
 		localStorage.removeItem('login');
 		localStorage.removeItem('password');
