@@ -1,13 +1,13 @@
 const authorization = async () => {
-	const currentURL = window.location.href;
-	const thisPageURL = 'http://localhost:3000/login.html';
 	const usersURL = 'http://localhost:3002/users';
-	const startPageUrl = 'http://localhost:3000/';
-	if (currentURL != thisPageURL) return;
+	const pathURl = window.location.pathname;
+	const thisPageURL = '/login.html';
+	const startPageUrl = '/';
+	if (thisPageURL != pathURl) return;
+
 	const btn = document.querySelector('.btn-authorization');
 	const loginInput = document.querySelector('#login');
 	const passwordInput = document.querySelector('#password');
-
 	let AllUsers = [];
 
 	try {
@@ -28,7 +28,7 @@ const authorization = async () => {
 			error.classList.remove('visible-element');
 			localStorage.setItem('login', login);
 			localStorage.setItem('password', password);
-			localStorage.setItem('isExpired', currentTime + 960);
+			localStorage.setItem('isExpired', currentTime + 60);
 			localStorage.setItem('authorized', true);
 		} else {
 			error.classList.add('visible-element');

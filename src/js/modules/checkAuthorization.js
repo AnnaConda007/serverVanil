@@ -1,8 +1,9 @@
 const checkAuthorization = () => {
-	const currentURL = window.location.href;
-	const thisPageURL = 'http://localhost:3000/';
+	const pathURl = window.location.pathname;
+	const thisPageURL = '/';
 	const authorizationPage = '/login.html';
-	if (currentURL != thisPageURL) return;
+	if (pathURl != thisPageURL) return;
+
 	setTimeout(() => {
 		document.querySelector('.loading').classList.add('hidden-element');
 	}, 0);
