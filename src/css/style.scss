@@ -1,12 +1,51 @@
 
-$primary: #1421de;
+$primary: #9a1ac1; 
 $theme-colors: (
-  "primary": $primary,
+  "primary": $primary, 
 );
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
+
+:root{
+--dark-color: rgb(0, 0, 0);
+--danger:rgb(241, 88, 88);
+}
 html, body {
   height: 100%;
+}
+a {
+  text-decoration: none;
+color: var(--dark-color);
+}
+
+.loading {
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  top: 0;
+  display: flex;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-around;
+  max-width: 200px;
+  width: 100%;
+}
+
+.user-login { 
+  font-weight: bold;
+  font-style: italic;
+  padding: 5px 10px;
+}
+
+.go-out{ 
+   height: fit-content;
+  background-color:$primary;
+    border-radius: 5px;
+  padding: 5px 10px;
+&:hover{
+ color: var(--danger)
+  }
 }
 
 .alert-danger{
@@ -16,4 +55,15 @@ html, body {
 .visible-element{
   display: block;
 }
- 
+
+.visible-element {
+  display: block;
+}
+
+.visible-flex {
+  display: flex;
+}
+
+.hidden-element {
+  display: none;
+}
