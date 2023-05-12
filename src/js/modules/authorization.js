@@ -16,24 +16,26 @@ const authorization = async () => {
 	} catch (error) {
 		console.error('Произошла ошибка при выполнении запроса:', error);
 	}
-
+	const authorizationfunc = (email, password) => {
+		const apiKey = 'AIzaSyB4c4RDOCAaTXro1HTbNH857drwGWX-K20';
+		fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`, {
+			method: 'POST',
+			body: JSON.stringify({ email, password, returnSecureToken: true }),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			.then((res) => res.json())
+			.then((res) => console.log(res))
+			.catch((error) => console.error('Error:', error));
+	};
 	const matchAuthorization = () => {
 		const login = loginInput.value;
 		const password = passwordInput.value;
 		const error = document.querySelector('.alert-danger');
-		const user = AllUsers.find((user) => user.name === login && user.password === password);
-		console.log(user);
-		if (user) {
-			const currentTime = Math.floor(Date.now() / 1000);
-			window.location.href = startPageUrl;
-			error.classList.remove('visible-element');
-			localStorage.setItem('login', login);
-			localStorage.setItem('password', password);
-			localStorage.setItem('isExpired', currentTime + 60);
-			localStorage.setItem('authorized', true);
-		} else {
-			error.classList.add('visible-element');
-		}
+
+		authorizationfunc(login, password);
+		window.location.href = startPageUrl;
 	};
 
 	btn.addEventListener('click', matchAuthorization);
@@ -43,5 +45,4 @@ const authorization = async () => {
 		}
 	});
 };
-
 export default authorization;
