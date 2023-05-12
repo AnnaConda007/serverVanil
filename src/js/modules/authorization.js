@@ -1,5 +1,5 @@
 const authorization = async () => {
-	const usersURL = 'http://localhost:3002/users';
+	const usersURL = 'https://bsh-app-3e342-default-rtdb.firebaseio.com/.json';
 	const pathURl = window.location.pathname;
 	const thisPageURL = '/login.html';
 	const startPageUrl = '/';
@@ -11,8 +11,10 @@ const authorization = async () => {
 	let AllUsers = [];
 
 	try {
-		const request = await fetch(usersURL);
-		AllUsers = await request.json();
+		const response = await fetch(usersURL);
+		const data = await response.json();
+		AllUsers = Object.values(data).flat();
+		console.log(AllUsers);
 	} catch (error) {
 		console.error('Произошла ошибка при выполнении запроса:', error);
 	}
@@ -22,6 +24,7 @@ const authorization = async () => {
 		const password = passwordInput.value;
 		const error = document.querySelector('.alert-danger');
 		const user = AllUsers.find((user) => user.name === login && user.password === password);
+		console.log(user);
 		if (user) {
 			const currentTime = Math.floor(Date.now() / 1000);
 			window.location.href = startPageUrl;
