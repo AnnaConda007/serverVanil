@@ -12,8 +12,7 @@ const authorization = async () => {
 
 	try {
 		const response = await fetch(usersURL);
-		const data = await response.json();
-		AllUsers = Object.values(data);
+		AllUsers = await response.json();
 	} catch (error) {
 		console.error('Произошла ошибка при выполнении запроса:', error);
 	}
@@ -23,6 +22,7 @@ const authorization = async () => {
 		const password = passwordInput.value;
 		const error = document.querySelector('.alert-danger');
 		const user = AllUsers.find((user) => user.name === login && user.password === password);
+		console.log(user);
 		if (user) {
 			const currentTime = Math.floor(Date.now() / 1000);
 			window.location.href = startPageUrl;
