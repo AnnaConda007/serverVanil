@@ -13,22 +13,31 @@ export const authorization = () => {
 	const authorizationResponse = async (email, password) => {
 		const errorText = document.querySelector('.alert-danger');
 		const apiKey = 'AIzaSyB4c4RDOCAaTXro1HTbNH857drwGWX-K20';
-		await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`, {
-			method: 'POST',
-			body: JSON.stringify({ email, password, returnSecureToken: true }),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		}).then((res) => {
-			if (!res.ok) {
+		try {
+			const response = await fetch(
+				`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
+				{
+					method: 'POST',
+					body: JSON.stringify({ email, password, returnSecureToken: true }),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+			if (!response.ok) {
 				errorText.classList.add('visible-element');
+				throw new Error('Authorization failed');
 			}
-		});
+		} catch (error) {
+			console.log(error, 'Ошибка при авторизации');
+			throw error;
+		}
 		const currentTime = Math.floor(Date.now() / 1000);
 		await updateAuthorized({
 			authorizedDataURL: authorizedDataURL,
 			currentTime: currentTime,
 			isExpired: 60,
+			userName: loginInput.value,
 		});
 	};
 
@@ -51,17 +60,22 @@ export const updateAuthorized = async ({
 	authorizedDataURL: authorizedDataURL,
 	currentTime: currentTime,
 	isExpired: isExpired,
+	userName: userName,
 }) => {
 	const checkData = {
 		isExpired: currentTime + isExpired,
+		userName: userName,
 	};
-	await fetch(authorizedDataURL, {
-		method: 'PATCH',
-		body: JSON.stringify(checkData),
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	}).catch((error) => {
-		console.error('Error: 4444444444', error);
-	});
+	try {
+		await fetch(authorizedDataURL, {
+			method: 'PATCH',
+			body: JSON.stringify(checkData),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+	} catch (error) {
+		console.log(error, 'Ошибка при запросе о времени авторизации');
+		throw error;
+	}
 };
