@@ -1,46 +1,42 @@
-export const authorization = async () => {
-	const authorizedData = 'https://bsh-app-3e342-default-rtdb.firebaseio.com/authorization.json';
+export const authorization = () => {
+	const authorizedDataURL = 'https://bsh-app-3e342-default-rtdb.firebaseio.com/authorization/.json';
 	const pathURl = window.location.pathname;
 	const thisPageURL = '/login.html';
 	const startPageUrl = '/';
-	const currentTime = Math.floor(Date.now() / 1000);
 	if (thisPageURL != pathURl) return;
 
 	const btn = document.querySelector('.btn-authorization');
 	const loginInput = document.querySelector('#login');
 	const passwordInput = document.querySelector('#password');
-	let AllUsers = [];
 
-	try {
-		const response = await fetch(authorizedData);
-		AllUsers = await response.json();
-	} catch (error) {
-		console.error('Произошла ошибка при выполнении запроса:', error);
-	}
 	/*1@mail.ru */
-	const authorizationResponse = (email, password) => {
+	const authorizationResponse = async (email, password) => {
 		const errorText = document.querySelector('.alert-danger');
 		const apiKey = 'AIzaSyB4c4RDOCAaTXro1HTbNH857drwGWX-K20';
-		fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`, {
+		await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`, {
 			method: 'POST',
 			body: JSON.stringify({ email, password, returnSecureToken: true }),
 			headers: {
 				'Content-Type': 'application/json',
 			},
-		})
-			.then(() => {
-				//window.location.href = startPageUrl;
-				updateAuthorized(authorizedData, currentTime, 160, 'true');
-			})
-			.catch((error) => {
-				console.error('Error:', error);
+		}).then((res) => {
+			if (!res.ok) {
 				errorText.classList.add('visible-element');
-			});
+			}
+		});
+		const currentTime = Math.floor(Date.now() / 1000);
+		await updateAuthorized({
+			authorizedDataURL: authorizedDataURL,
+			currentTime: currentTime,
+			isExpired: 60,
+		});
 	};
-	const matchAuthorization = () => {
-		const login = loginInput.value;
+
+	const matchAuthorization = async () => {
+		const email = loginInput.value;
 		const password = passwordInput.value;
-		authorizationResponse(login, password);
+		await authorizationResponse(email, password);
+		window.location.href = startPageUrl;
 	};
 
 	btn.addEventListener('click', matchAuthorization);
@@ -51,26 +47,21 @@ export const authorization = async () => {
 	});
 };
 
-export const updateAuthorized = (authorizedData, currentTime, isExpired, authorized) => {
+export const updateAuthorized = async ({
+	authorizedDataURL: authorizedDataURL,
+	currentTime: currentTime,
+	isExpired: isExpired,
+}) => {
 	const checkData = {
 		isExpired: currentTime + isExpired,
-		authorized: authorized,
 	};
-	fetch(authorizedData, {
+	await fetch(authorizedDataURL, {
 		method: 'PATCH',
 		body: JSON.stringify(checkData),
 		headers: {
 			'Content-Type': 'application/json',
 		},
-	})
-		.then((response) => response.json())
-		.then((response) => {
-			if (response.error) {
-				throw new Error(response.error.message);
-			}
-			console.log(response);
-		})
-		.catch((error) => {
-			console.error('Error:', error);
-		});
+	}).catch((error) => {
+		console.error('Error: 4444444444', error);
+	});
 };
