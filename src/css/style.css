@@ -10469,4 +10469,9 @@ a {
   display: none;
 }
 
+.edited {
+  outline: 2px solid rgb(122, 122, 238);
+  
+}
+
 /*# sourceMappingURL=style.css.map */

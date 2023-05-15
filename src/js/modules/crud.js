@@ -14,9 +14,23 @@ export const crud = () => {
 		render();
 	};
 
+	const editStart = (e, index) => {
+		const listItem = e.target.closest('.list-item');
+		const taskValue = listItem.querySelector('.list-item__value');
+		if (!taskValue.classList.contains('edited')) {
+			taskValue.setAttribute('contenteditable', 'true');
+			taskValue.classList.add('edited');
+		} else {
+			taskValue.setAttribute('contenteditable', 'false');
+			taskValue.classList.remove('edited');
+			tasks[index] = taskValue.textContent;
+			console.log(tasks);
+		}
+	};
+
 	const render = () => {
 		taskList.innerHTML = '';
-		tasks.forEach((task, index) => {
+		tasks.forEach((task) => {
 			taskList.innerHTML += `
 				<li class="list-group-item mt-2 list-item">
 					<div>
@@ -30,16 +44,10 @@ export const crud = () => {
 					</div>
 				</li>
 			`;
-			taskList.querySelector('.edit-btn').addEventListener('click', () => {
-				const taskValue = taskList.querySelector('.list-item__value');
-				if (!taskValue.classList.contains('edited')) {
-					taskValue.setAttribute('contenteditable', 'true');
-					taskValue.classList.add('edited');
-				} else {
-					taskValue.setAttribute('contenteditable', 'false');
-					tasks[index] = taskValue.textContent;
-					console.log(tasks);
-				}
+		});
+		taskList.querySelectorAll('.edit-btn').forEach((btn, index) => {
+			btn.addEventListener('click', (e) => {
+				editStart(e, index);
 			});
 		});
 	};
