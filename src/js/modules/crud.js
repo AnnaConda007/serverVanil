@@ -3,7 +3,6 @@ export const crud = () => {
 	const taskInput = document.querySelector('.task-input');
 	const addBtn = document.querySelector('.add-btn');
 	const taskList = document.querySelector('.task-list');
-	const listItem = document.querySelector('.list-item');
 
 	const addTask = () => {
 		let task = taskInput.value.trim();
@@ -14,16 +13,23 @@ export const crud = () => {
 		render();
 	};
 
-	const editStart = (e, index) => {
-		const listItem = e.target.closest('.list-item');
-		const taskValue = listItem.querySelector('.list-item__value');
-		if (!taskValue.classList.contains('edited')) {
-			taskValue.setAttribute('contenteditable', 'true');
-			taskValue.classList.add('edited');
+	const resetEdit = () => {
+		const AlltaskContent = document.querySelectorAll('.list-item__value');
+		AlltaskContent.forEach((content) => {
+			content.classList.remove('edited');
+		});
+	};
+	const editTask = (e, index) => {
+		const taskWrap = e.target.closest('.list-item');
+		const taskContent = taskWrap.querySelector('.list-item__value');
+		if (!taskContent.classList.contains('edited')) {
+			resetEdit();
+			taskContent.setAttribute('contenteditable', 'true');
+			taskContent.classList.add('edited');
 		} else {
-			taskValue.setAttribute('contenteditable', 'false');
-			taskValue.classList.remove('edited');
-			tasks[index] = taskValue.textContent;
+			taskContent.setAttribute('contenteditable', 'false');
+			taskContent.classList.remove('edited');
+			tasks[index] = taskContent.textContent;
 			console.log(tasks);
 		}
 	};
@@ -47,7 +53,7 @@ export const crud = () => {
 		});
 		taskList.querySelectorAll('.edit-btn').forEach((btn, index) => {
 			btn.addEventListener('click', (e) => {
-				editStart(e, index);
+				editTask(e, index);
 			});
 		});
 	};
@@ -55,5 +61,18 @@ export const crud = () => {
 	addBtn.addEventListener('click', (e) => {
 		e.preventDefault();
 		addTask();
+	});
+
+	window.addEventListener('keydown', (e) => {
+		if (e.code === 'Enter') {
+			e.preventDefault();
+			addTask();
+		}
+	});
+
+	window.addEventListener('click', (e) => {
+		if (!e.target.closest('.list-item')) {
+			resetEdit();
+		}
 	});
 };
