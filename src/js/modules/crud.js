@@ -19,6 +19,7 @@ export const crud = () => {
 			content.classList.remove('edited');
 		});
 	};
+
 	const editTask = (e, index) => {
 		const taskWrap = e.target.closest('.list-item');
 		const taskContent = taskWrap.querySelector('.list-item__value');
@@ -26,12 +27,30 @@ export const crud = () => {
 			resetEdit();
 			taskContent.setAttribute('contenteditable', 'true');
 			taskContent.classList.add('edited');
+			taskContent.focus();
 		} else {
 			taskContent.setAttribute('contenteditable', 'false');
 			taskContent.classList.remove('edited');
 			tasks[index] = taskContent.textContent;
 			console.log(tasks);
 		}
+	};
+
+	const handleClick = (elem, triger, eventType) => {
+		elem.querySelectorAll(triger).forEach((btn, index) => {
+			btn.addEventListener(eventType, (e) => {
+				editTask(e, index);
+			});
+		});
+	};
+	const handleKeydown = (elem, triger, eventType, eCode) => {
+		elem.querySelectorAll(triger).forEach((btn, index) => {
+			btn.addEventListener(eventType, (e) => {
+				if (e.code === eCode) {
+					editTask(e, index);
+				}
+			});
+		});
 	};
 
 	const render = () => {
@@ -51,11 +70,8 @@ export const crud = () => {
 				</li>
 			`;
 		});
-		taskList.querySelectorAll('.edit-btn').forEach((btn, index) => {
-			btn.addEventListener('click', (e) => {
-				editTask(e, index);
-			});
-		});
+		handleClick(taskList, '.edit-btn', 'click', false);
+		handleKeydown(document, '.list-item__value', 'keydown', 'Enter');
 	};
 
 	addBtn.addEventListener('click', (e) => {
@@ -63,7 +79,7 @@ export const crud = () => {
 		addTask();
 	});
 
-	window.addEventListener('keydown', (e) => {
+	taskInput.addEventListener('keydown', (e) => {
 		if (e.code === 'Enter') {
 			e.preventDefault();
 			addTask();
