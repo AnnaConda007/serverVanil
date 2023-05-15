@@ -36,7 +36,7 @@ export const authorization = () => {
 		await updateAuthorized({
 			authorizedDataURL: authorizedDataURL,
 			currentTime: currentTime,
-			isExpired: 60,
+			isExpired: 604800,
 			userName: loginInput.value,
 		});
 	};
