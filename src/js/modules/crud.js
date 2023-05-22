@@ -9,7 +9,6 @@ export const crud = () => {
 		if (task === '') return;
 		tasks.push(task);
 		taskInput.value = '';
-		console.log(tasks);
 		render();
 	};
 
@@ -36,31 +35,21 @@ export const crud = () => {
 		}
 	};
 
-	const handleClick = (elem, triger, eventType) => {
-		elem.querySelectorAll(triger).forEach((btn, index) => {
-			btn.addEventListener(eventType, (e) => {
-				editTask(e, index);
-			});
-		});
-	};
-	const handleKeydown = (elem, triger, eventType, eCode) => {
-		elem.querySelectorAll(triger).forEach((btn, index) => {
-			btn.addEventListener(eventType, (e) => {
-				if (e.code === eCode) {
-					editTask(e, index);
-				}
-			});
-		});
+	const deleteTask = (e, index) => {
+		const taskWrap = e.target.closest('.list-item');
+		const task = taskWrap.querySelector('.list-item__value');
+		tasks.splice(index, 1);
+		render();
 	};
 
 	const render = () => {
 		taskList.innerHTML = '';
-		tasks.forEach((task) => {
+		tasks.forEach((task, index) => {
 			taskList.innerHTML += `
 				<li class="list-group-item mt-2 list-item">
 					<div>
 						<span class="list-item__value">${task}</span>
-						<button class="bg-transparent border-0 edit-btn">
+						<button class="bg-transparent border-0 edit-btn" data-index="${index}">
 							<img src="img/pencil.svg" alt="" />
 						</button>
 						<button class="bg-transparent border-0 delete-btn">
@@ -70,10 +59,25 @@ export const crud = () => {
 				</li>
 			`;
 		});
-		handleClick(taskList, '.edit-btn', 'click', false);
-		handleKeydown(document, '.list-item__value', 'keydown', 'Enter');
 	};
 
+	const handlEdit = (e) => {
+		const target = e.target;
+		const editButton = target.closest('.edit-btn');
+		if (editButton) {
+			const index = parseInt(editButton.dataset.index);
+			console.log(index);
+			editTask(e, index);
+		}
+
+		const deleteButton = target.closest('.delete-btn');
+		if (deleteButton) {
+			const index = parseInt(deleteButton.dataset.index);
+			deleteTask(index);
+		}
+	};
+
+	taskList.addEventListener('click', handlEdit);
 	addBtn.addEventListener('click', (e) => {
 		e.preventDefault();
 		addTask();
