@@ -35,13 +35,34 @@ export const crud = () => {
 		}
 	};
 
-	const deleteTask = (e, index) => {
-		const taskWrap = e.target.closest('.list-item');
-		const task = taskWrap.querySelector('.list-item__value');
+	const handlEdit = (e) => {
+		const target = e.target;
+		const editButton = target.closest('.edit-btn');
+		if (editButton) {
+			const index = parseInt(editButton.dataset.index);
+			console.log(index);
+			editTask(e, index);
+		}
+	};
+
+	const deleteTask = (index) => {
 		tasks.splice(index, 1);
 		render();
 	};
 
+	const handlDelit = (e) => {
+		const target = e.target;
+		const deleteButton = target.closest('.delete-btn');
+		if (deleteButton) {
+			const index = parseInt(deleteButton.dataset.index);
+			deleteTask(index);
+		}
+	};
+
+	taskList.addEventListener('click', (e) => {
+		handlEdit(e);
+		handlDelit(e);
+	});
 	const render = () => {
 		taskList.innerHTML = '';
 		tasks.forEach((task, index) => {
@@ -52,7 +73,7 @@ export const crud = () => {
 						<button class="bg-transparent border-0 edit-btn" data-index="${index}">
 							<img src="img/pencil.svg" alt="" />
 						</button>
-						<button class="bg-transparent border-0 delete-btn">
+						<button class="bg-transparent border-0 delete-btn data-index="${index}"">
 							<img src="img/trash.svg" alt="" />
 						</button>
 					</div>
@@ -61,23 +82,6 @@ export const crud = () => {
 		});
 	};
 
-	const handlEdit = (e) => {
-		const target = e.target;
-		const editButton = target.closest('.edit-btn');
-		if (editButton) {
-			const index = parseInt(editButton.dataset.index);
-			console.log(index);
-			editTask(e, index);
-		}
-
-		const deleteButton = target.closest('.delete-btn');
-		if (deleteButton) {
-			const index = parseInt(deleteButton.dataset.index);
-			deleteTask(index);
-		}
-	};
-
-	taskList.addEventListener('click', handlEdit);
 	addBtn.addEventListener('click', (e) => {
 		e.preventDefault();
 		addTask();
