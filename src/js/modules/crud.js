@@ -13,7 +13,7 @@ export const crud = () => {
 	};
 
 	const resetEdit = () => {
-		const AlltaskContent = document.querySelectorAll('.list-item__value');
+		const AlltaskContent = taskList.querySelectorAll('.list-item__value');
 		AlltaskContent.forEach((content) => {
 			content.classList.remove('edited');
 		});
@@ -35,8 +35,8 @@ export const crud = () => {
 	const handlEdit = (e) => {
 		const target = e.target;
 		const editButton = target.closest('.edit-btn');
-		const index = parseInt(editButton.dataset.index);
 		if (!editButton) return;
+		const index = parseInt(editButton.dataset.index);
 		const taskWrap = editButton.closest('.list-item');
 		const taskContent = taskWrap.querySelector('.list-item__value');
 		if (!taskContent.classList.contains('edited')) {
@@ -69,7 +69,6 @@ export const crud = () => {
 		if (e.code === 'Enter') {
 			const activeElement = document.activeElement;
 			const taskContent = document.activeElement.closest('.list-item__value');
-			if (!taskContent) return;
 			const index = parseInt(activeElement.dataset.index);
 			console.log('index', index);
 			finishEditing(taskContent, index);
@@ -80,18 +79,18 @@ export const crud = () => {
 		taskList.innerHTML = '';
 		tasks.forEach((task, index) => {
 			taskList.innerHTML += `
-				<li class="list-group-item mt-2 list-item">
-					<div>
-						<span class="list-item__value" data-index="${index}">${task}</span>
-						<button class="bg-transparent border-0 edit-btn" data-index="${index}">
-							<img src="img/pencil.svg" alt="" />
-						</button>
-						<button class="bg-transparent border-0 delete-btn data-index="${index}"">
-							<img src="img/trash.svg" alt="" />
-						</button>
-					</div>
-				</li>
-			`;
+			<li class="list-group-item mt-2 list-item">
+				<div>
+					<span class="list-item__value" data-index="${index}">${task}</span>
+					<button class="bg-transparent border-0 edit-btn" data-index="${index}">
+						<img src="img/pencil.svg" alt="" />
+					</button>
+					<button class="bg-transparent border-0 delete-btn" data-index="${index}">
+						<img src="img/trash.svg" alt="" />
+					</button>
+				</div>
+			</li>
+		`;
 		});
 	};
 
