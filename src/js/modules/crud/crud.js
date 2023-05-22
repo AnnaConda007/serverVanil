@@ -1,4 +1,8 @@
 export const crud = () => {
+	const pathURl = window.location.pathname;
+	const thisPageURL = '/';
+	if (pathURl != thisPageURL) return;
+
 	const tasks = [];
 	const taskInput = document.querySelector('.task-input');
 	const addBtn = document.querySelector('.add-btn');
@@ -83,10 +87,10 @@ export const crud = () => {
 				<div>
 					<span class="list-item__value" data-index="${index}">${task}</span>
 					<button class="bg-transparent border-0 edit-btn" data-index="${index}">
-						<img src="img/pencil.svg" alt="" />
+						<img src="img/pencil.svg" alt="редактировать" />
 					</button>
 					<button class="bg-transparent border-0 delete-btn" data-index="${index}">
-						<img src="img/trash.svg" alt="" />
+						<img src="img/trash.svg" alt="удалить" />
 					</button>
 				</div>
 			</li>
