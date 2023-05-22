@@ -19,40 +19,30 @@ export const crud = () => {
 		});
 	};
 
-	const enter = (e, index) => {
-		const taskWrap = e.target.closest('.list-item');
-		const taskContent = taskWrap.querySelector('.list-item__value');
-		if (taskContent.classList.contains('edited')) {
-			taskContent.setAttribute('contenteditable', 'false');
-			taskContent.classList.remove('edited');
-			tasks[index] = taskContent.textContent;
-			console.log(tasks);
-		}
+	const editTask = (taskContent) => {
+		resetEdit();
+		taskContent.setAttribute('contenteditable', 'true');
+		taskContent.classList.add('edited');
+		taskContent.focus();
 	};
 
-	const editTask = (e, index) => {
-		const taskWrap = e.target.closest('.list-item');
-		const taskContent = taskWrap.querySelector('.list-item__value');
-		if (!taskContent.classList.contains('edited')) {
-			resetEdit();
-			taskContent.setAttribute('contenteditable', 'true');
-			taskContent.classList.add('edited');
-			taskContent.focus();
-		} else {
-			taskContent.setAttribute('contenteditable', 'false');
-			taskContent.classList.remove('edited');
-			tasks[index] = taskContent.textContent;
-			console.log(tasks);
-		}
+	const finishEditing = (taskContent, index) => {
+		taskContent.setAttribute('contenteditable', 'false');
+		taskContent.classList.remove('edited');
+		tasks[index] = taskContent.textContent;
+		console.log(tasks);
 	};
-
 	const handlEdit = (e) => {
 		const target = e.target;
 		const editButton = target.closest('.edit-btn');
-		if (editButton) {
-			const index = parseInt(editButton.dataset.index);
-			console.log(index);
-			editTask(e, index);
+		const index = parseInt(editButton.dataset.index);
+		if (!editButton) return;
+		const taskWrap = editButton.closest('.list-item');
+		const taskContent = taskWrap.querySelector('.list-item__value');
+		if (!taskContent.classList.contains('edited')) {
+			editTask(taskContent, index);
+		} else {
+			finishEditing(taskContent, index);
 		}
 	};
 
@@ -77,11 +67,12 @@ export const crud = () => {
 
 	taskList.addEventListener('keydown', (e) => {
 		if (e.code === 'Enter') {
-			const activeElement = document.activeElement.closest('.list-item__value');
-			console.log(activeElement);
+			const activeElement = document.activeElement;
+			const taskContent = document.activeElement.closest('.list-item__value');
+			if (!taskContent) return;
 			const index = parseInt(activeElement.dataset.index);
 			console.log('index', index);
-			enter(e, index);
+			finishEditing(taskContent, index);
 		}
 	});
 
