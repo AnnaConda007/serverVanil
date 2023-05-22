@@ -19,6 +19,17 @@ export const crud = () => {
 		});
 	};
 
+	const enter = (e, index) => {
+		const taskWrap = e.target.closest('.list-item');
+		const taskContent = taskWrap.querySelector('.list-item__value');
+		if (taskContent.classList.contains('edited')) {
+			taskContent.setAttribute('contenteditable', 'false');
+			taskContent.classList.remove('edited');
+			tasks[index] = taskContent.textContent;
+			console.log(tasks);
+		}
+	};
+
 	const editTask = (e, index) => {
 		const taskWrap = e.target.closest('.list-item');
 		const taskContent = taskWrap.querySelector('.list-item__value');
@@ -63,13 +74,24 @@ export const crud = () => {
 		handlEdit(e);
 		handlDelit(e);
 	});
+
+	taskList.addEventListener('keydown', (e) => {
+		if (e.code === 'Enter') {
+			const activeElement = document.activeElement.closest('.list-item__value');
+			console.log(activeElement);
+			const index = parseInt(activeElement.dataset.index);
+			console.log('index', index);
+			enter(e, index);
+		}
+	});
+
 	const render = () => {
 		taskList.innerHTML = '';
 		tasks.forEach((task, index) => {
 			taskList.innerHTML += `
 				<li class="list-group-item mt-2 list-item">
 					<div>
-						<span class="list-item__value">${task}</span>
+						<span class="list-item__value" data-index="${index}">${task}</span>
 						<button class="bg-transparent border-0 edit-btn" data-index="${index}">
 							<img src="img/pencil.svg" alt="" />
 						</button>
