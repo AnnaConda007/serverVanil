@@ -2,14 +2,35 @@ import { resetEdit, finishEditing, handlEdit } from './edit.js';
 import { handlDelit } from './delete.js';
 import { render } from './render.js';
 
-export const crud = () => {
+export const crud = async () => {
 	const pathURl = window.location.pathname;
 	const thisPageURL = '/';
 	if (pathURl != thisPageURL) return;
-	const tasks = [];
 	const taskInput = document.querySelector('.task-input');
 	const addBtn = document.querySelector('.add-btn');
 	const taskList = document.querySelector('.task-list');
+	let tasks = [];
+
+	const res = await fetch('https://bsh-app-3e342-default-rtdb.firebaseio.com/tasks.json');
+	const resJson = await res.json();
+	console.log(resJson);
+	tasks = resJson ? resJson : tasks;
+	render(taskList, tasks);
+
+	const pushTasks = async () => {
+		await fetch('https://bsh-app-3e342-default-rtdb.firebaseio.com/tasks.json', {
+			method: 'PUT',
+			body: JSON.stringify(tasks),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		const res = await fetch('https://bsh-app-3e342-default-rtdb.firebaseio.com/tasks.json');
+		const resJson = await res.json();
+		console.log(resJson);
+		tasks = resJson ? resJson : tasks;
+		render(taskList, tasks);
+	};
 
 	const addTask = () => {
 		let task = taskInput.value.trim();
@@ -29,7 +50,6 @@ export const crud = () => {
 			const activeElement = document.activeElement;
 			const taskContent = document.activeElement.closest('.list-item__value');
 			const index = parseInt(activeElement.dataset.index);
-			console.log('index', index);
 			finishEditing(taskContent, index, tasks);
 		}
 	});

@@ -1,3 +1,4 @@
+
 export const resetEdit = (taskList) => {
 	const AlltaskContent = taskList.querySelectorAll('.list-item__value');
 	AlltaskContent.forEach((content) => {
@@ -16,7 +17,6 @@ export const finishEditing = (taskContent, index, tasks) => {
 	taskContent.setAttribute('contenteditable', 'false');
 	taskContent.classList.remove('edited');
 	tasks[index] = taskContent.textContent;
-	console.log(tasks);
 };
 export const handlEdit = (e, taskList, tasks) => {
 	const target = e.target;

@@ -1,5 +1,4 @@
 import { render } from './render.js';  
-
 export const deleteTask = (index, tasks, taskList) => {
 	tasks.splice(index, 1);
 	render(taskList, tasks);  

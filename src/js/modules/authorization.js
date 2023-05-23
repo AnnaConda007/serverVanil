@@ -9,7 +9,6 @@ export const authorization = () => {
 	const loginInput = document.querySelector('#login');
 	const passwordInput = document.querySelector('#password');
 
-	/*1@mail.ru */
 	const authorizationResponse = async (email, password) => {
 		const errorText = document.querySelector('.alert-danger');
 		const apiKey = 'AIzaSyB4c4RDOCAaTXro1HTbNH857drwGWX-K20';
