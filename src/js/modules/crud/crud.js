@@ -24,6 +24,7 @@ export const crud = async () => {
 			},
 		});
 		await pullTask();
+		render();
 	};
 	pullTask();
 
@@ -66,7 +67,6 @@ export const crud = async () => {
 	const deleteTask = (index) => {
 		tasks.splice(index, 1);
 		pushTasks();
-		render();
 	};
 
 	const handlDelit = (e) => {
