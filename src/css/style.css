@@ -10480,6 +10480,7 @@ a {
 
 .tasks-wrap{
   max-width: 400px;
+  width: 100%;
 }
 
 .list-item__value{
