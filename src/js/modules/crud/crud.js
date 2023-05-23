@@ -6,6 +6,7 @@ export const crud = async () => {
 	const addBtn = document.querySelector('.add-btn');
 	const taskList = document.querySelector('.task-list');
 	let tasks = [];
+
 	const pullTask = async () => {
 		const res = await fetch('https://bsh-app-3e342-default-rtdb.firebaseio.com/tasks.json');
 		const resJson = await res.json();
@@ -14,6 +15,7 @@ export const crud = async () => {
 		console.log('tasks', tasks);
 		render();
 	};
+	pullTask();
 
 	const pushTasks = async () => {
 		await fetch('https://bsh-app-3e342-default-rtdb.firebaseio.com/tasks.json', {
@@ -26,13 +28,13 @@ export const crud = async () => {
 		await pullTask();
 		render();
 	};
-	pullTask();
 
-	const resetEdit = () => {
-		const AlltaskContent = taskList.querySelectorAll('.list-item__value');
-		AlltaskContent.forEach((content) => {
-			content.classList.remove('edited');
-		});
+	const addTask = () => {
+		let task = taskInput.value.trim();
+		if (task === '') return;
+		tasks.push(task);
+		taskInput.value = '';
+		pushTasks();
 	};
 
 	const editTask = (taskContent) => {
@@ -40,6 +42,13 @@ export const crud = async () => {
 		taskContent.setAttribute('contenteditable', 'true');
 		taskContent.classList.add('edited');
 		taskContent.focus();
+	};
+
+	const resetEdit = () => {
+		const AlltaskContent = taskList.querySelectorAll('.list-item__value');
+		AlltaskContent.forEach((content) => {
+			content.classList.remove('edited');
+		});
 	};
 
 	const finishEditing = (taskContent, index) => {
@@ -83,9 +92,9 @@ export const crud = async () => {
 		tasks.forEach((task, index) => {
 			taskList.innerHTML += `
    <li class="list-group-item mt-2 list-item">
-	<div class="d-flex justify-content-between ">
+	<div class="d-flex justify-content-between">
 		<span class="list-item__value" data-index="${index}">${task}</span>
-		<div>
+		<div class="k">
 			<button class="bg-transparent border-0 edit-btn" data-index="${index}">
 				<img src="img/pencil.svg" alt="редактировать" />
 			</button>
@@ -97,14 +106,6 @@ export const crud = async () => {
 </li>
     `;
 		});
-	};
-
-	const addTask = () => {
-		let task = taskInput.value.trim();
-		if (task === '') return;
-		tasks.push(task);
-		taskInput.value = '';
-		pushTasks();
 	};
 
 	taskList.addEventListener('click', (e) => {

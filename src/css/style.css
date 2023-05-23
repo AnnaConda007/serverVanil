@@ -10414,6 +10414,11 @@ body {
   height: 100%;
 }
 
+*{
+margin: 0;
+padding: 0;
+}
+
 a {
   text-decoration: none;
   color: var(--dark-color);
@@ -10471,14 +10476,19 @@ a {
 
 .edited {
   outline: 2px solid rgb(122, 122, 238);
-  
 }
 
-.buttons{
-  background-color: red;
+.tasks-wrap{
+  max-width: 400px;
 }
 
-.p{
-  background-color: #0d6efd;
+.list-item__value{
+    word-break: break-word;
+  width: 85%;
 }
+
+.task-input{ 
+  width: 90%;
+}
+ 
 /*# sourceMappingURL=style.css.map */
