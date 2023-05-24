@@ -1,7 +1,5 @@
 export const crud = async () => {
-	const pathURl = window.location.pathname;
-	const thisPageURL = '/';
-	if (pathURl != thisPageURL) return;
+	if (!document.querySelector('.tasks-wrap')) return;
 	const taskInput = document.querySelector('.task-input');
 	const addBtn = document.querySelector('.add-btn');
 	const taskList = document.querySelector('.task-list');

@@ -1,10 +1,7 @@
 export const authorization = () => {
 	const authorizedDataURL = 'https://bsh-app-3e342-default-rtdb.firebaseio.com/authorization/.json';
-	const pathURl = window.location.pathname;
-	const thisPageURL = '/login.html';
 	const startPageUrl = '/';
-	if (thisPageURL != pathURl) return;
-
+	if(!document.querySelector(".authorization"))return
 	const btn = document.querySelector('.btn-authorization');
 	const loginInput = document.querySelector('#login');
 	const passwordInput = document.querySelector('#password');
