@@ -8,9 +8,7 @@ export const crud = async () => {
 	const pullTask = async () => {
 		const res = await fetch('https://bsh-app-3e342-default-rtdb.firebaseio.com/tasks.json');
 		const resJson = await res.json();
-		console.log('resJson', resJson);
 		tasks = resJson ? resJson : tasks;
-		console.log('tasks', tasks);
 		render();
 	};
 	pullTask();
@@ -54,7 +52,6 @@ export const crud = async () => {
 		taskContent.classList.remove('edited');
 		tasks[index] = taskContent.textContent;
 		pushTasks();
-		console.log(tasks);
 	};
 
 	const handlEdit = (e) => {

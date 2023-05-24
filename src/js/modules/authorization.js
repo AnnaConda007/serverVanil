@@ -1,7 +1,7 @@
 export const authorization = () => {
 	const authorizedDataURL = 'https://bsh-app-3e342-default-rtdb.firebaseio.com/authorization/.json';
 	const startPageUrl = './';
-	if(!document.querySelector(".authorization"))return
+	if (!document.querySelector('.authorization')) return;
 	const btn = document.querySelector('.btn-authorization');
 	const loginInput = document.querySelector('#login');
 	const passwordInput = document.querySelector('#password');
@@ -9,6 +9,8 @@ export const authorization = () => {
 	const authorizationResponse = async (email, password) => {
 		const errorText = document.querySelector('.alert-danger');
 		const apiKey = 'AIzaSyB4c4RDOCAaTXro1HTbNH857drwGWX-K20';
+		const autosaveTime = 604800;
+
 		try {
 			const response = await fetch(
 				`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
@@ -32,7 +34,7 @@ export const authorization = () => {
 		await updateAuthorized({
 			authorizedDataURL: authorizedDataURL,
 			currentTime: currentTime,
-			isExpired: 604800,
+			isExpired: autosaveTime,
 			userName: loginInput.value,
 		});
 	};
