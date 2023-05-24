@@ -89,7 +89,7 @@ export const crud = async () => {
    <li class="list-group-item mt-2 list-item">
 	<div class="d-flex justify-content-between">
 		<span class="list-item__value" data-index="${index}">${task}</span>
-		<div class="k">
+		<div>
 			<button class="bg-transparent border-0 edit-btn" data-index="${index}">
 				<img src="img/pencil.svg" alt="редактировать" />
 			</button>
