@@ -1,14 +1,13 @@
 import { updateAuthorized } from './authorization.js';
-const checkAuthorization = async () => { 
+const checkAuthorization = async () => {
+	if (!document.querySelector('.tasks-wrap')) return;
 
-if(!document.querySelector(".tasks-wrap"))return
-
-	const authorizationPage = '/login.html';
+	const authorizationPage = './login.html';
 	const authorizedDataURL = 'https://bsh-app-3e342-default-rtdb.firebaseio.com/authorization/.json';
 	let isExpired;
 	let userName;
 	const currentTime = Math.floor(Date.now() / 1000);
- 
+
 	setTimeout(() => {
 		document.querySelector('.loading').classList.add('hidden-element');
 	}, 500);
