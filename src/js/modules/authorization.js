@@ -1,39 +1,49 @@
-const authorization = async () => {
-	const usersURL = 'https://bsh-app-3e342-default-rtdb.firebaseio.com/.json';
-	const pathURl = window.location.pathname;
-	const thisPageURL = '/login.html';
-	const startPageUrl = '/';
-	if (thisPageURL != pathURl) return;
-
+export const authorization = () => {
+	const authorizedDataURL = 'https://bsh-app-3e342-default-rtdb.firebaseio.com/authorization/.json';
+	const startPageUrl = './';
+	if (!document.querySelector('.authorization')) return;
 	const btn = document.querySelector('.btn-authorization');
 	const loginInput = document.querySelector('#login');
 	const passwordInput = document.querySelector('#password');
-	let AllUsers = [];
 
-	try {
-		const response = await fetch(usersURL);
-		AllUsers = await response.json();
-	} catch (error) {
-		console.error('Произошла ошибка при выполнении запроса:', error);
-	}
+	const authorizationResponse = async (email, password) => {
+		const errorText = document.querySelector('.alert-danger');
+		const apiKey = 'AIzaSyB4c4RDOCAaTXro1HTbNH857drwGWX-K20';
+		const autosaveTime = 604800;
 
-	const matchAuthorization = () => {
-		const login = loginInput.value;
-		const password = passwordInput.value;
-		const error = document.querySelector('.alert-danger');
-		const user = AllUsers.find((user) => user.name === login && user.password === password);
-		console.log(user);
-		if (user) {
-			const currentTime = Math.floor(Date.now() / 1000);
-			window.location.href = startPageUrl;
-			error.classList.remove('visible-element');
-			localStorage.setItem('login', login);
-			localStorage.setItem('password', password);
-			localStorage.setItem('isExpired', currentTime + 60);
-			localStorage.setItem('authorized', true);
-		} else {
-			error.classList.add('visible-element');
+		try {
+			const response = await fetch(
+				`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
+				{
+					method: 'POST',
+					body: JSON.stringify({ email, password, returnSecureToken: true }),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+			if (!response.ok) {
+				errorText.classList.add('visible-element');
+				throw new Error('Authorization failed');
+			}
+		} catch (error) {
+			console.log(error, 'Ошибка при авторизации');
+			throw error;
 		}
+		const currentTime = Math.floor(Date.now() / 1000);
+		await updateAuthorized({
+			authorizedDataURL: authorizedDataURL,
+			currentTime: currentTime,
+			isExpired: autosaveTime,
+			userName: loginInput.value,
+		});
+	};
+
+	const matchAuthorization = async () => {
+		const email = loginInput.value;
+		const password = passwordInput.value;
+		await authorizationResponse(email, password);
+		window.location.href = startPageUrl;
 	};
 
 	btn.addEventListener('click', matchAuthorization);
@@ -44,4 +54,26 @@ const authorization = async () => {
 	});
 };
 
-export default authorization;
+export const updateAuthorized = async ({
+	authorizedDataURL: authorizedDataURL,
+	currentTime: currentTime,
+	isExpired: isExpired,
+	userName: userName,
+}) => {
+	const checkData = {
+		isExpired: currentTime + isExpired,
+		userName: userName,
+	};
+	try {
+		await fetch(authorizedDataURL, {
+			method: 'PATCH',
+			body: JSON.stringify(checkData),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+	} catch (error) {
+		console.log(error, 'Ошибка при запросе о времени авторизации');
+		throw error;
+	}
+};

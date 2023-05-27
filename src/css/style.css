@@ -10414,6 +10414,11 @@ body {
   height: 100%;
 }
 
+*{
+margin: 0;
+padding: 0;
+}
+
 a {
   text-decoration: none;
   color: var(--dark-color);
@@ -10469,4 +10474,22 @@ a {
   display: none;
 }
 
+.edited {
+  outline: 2px solid rgb(122, 122, 238);
+}
+
+.tasks-wrap{
+  max-width: 400px;
+  width: 100%;
+}
+
+.list-item__value{
+    word-break: break-word;
+  width: 85%;
+}
+
+.task-input{ 
+  width: 90%;
+}
+ 
 /*# sourceMappingURL=style.css.map */

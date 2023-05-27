@@ -12,10 +12,28 @@
 		<header class="container-fluid d-flex justify-content-end">
 			<div class="nav mt-2">
 				<span class="user-login"></span>
-				<a href="./login.html" class="go-out">выйти</a>
+				<p href="/login.html" class="go-out">выйти</p>
 			</div>
 		</header>
+		<main class="container-fluid d-flex justify-content-center align-items-center h-100">
+			<div class="bg-primary p-3 tasks-wrap">
+				<form class="mb-3 task-form">
+					<div class="form-group d-flex justify-content-evenly ">
+						<input type="text" name="" id="" class="form-control task-input" />
+						<button class="bg-transparent border-0 add-btn" type="submit">
+							<img src="img/plus.svg" alt="" />
+						</button>
+					</div>
+				</form>
+				<div class="list-wrap">
+					<ul class="task-list list-group list-group-flush"></ul>
+				</div>
+			</div>
+		</main>
+
 		<div class="container-fluid align-items-center justify-content-center loading h-100"></div>
 		<script src="js/main.js" type="module"></script>
 	</body>
 </html>
+
+

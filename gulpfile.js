@@ -62,6 +62,7 @@ gulp.task('build', function (done) {
 		.pipe(htmlmin({ collapseWhitespace: true }))
 		.pipe(replace('style.css', 'style.min.css'))
 		.pipe(replace('main.js', 'main.min.js'))
-		.pipe(gulp.dest('dist/src'))
-		.on('end', done);
+		.pipe(gulp.dest('dist/src'));
+
+	gulp.src('src/img/**/*').pipe(gulp.dest('dist/src/img')).on('end', done);
 });
